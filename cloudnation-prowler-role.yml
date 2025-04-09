@@ -2,21 +2,21 @@ AWSTemplateFormatVersion: "2010-09-09"
 
 
 Description: |
-  This template creates the ProwlerScan IAM Role in this account with
+  This template creates the CloudnationScan IAM Role in this account with
   all read-only permissions to scan your account for security issues.
   Contains two AWS managed policies (SecurityAudit and ViewOnlyAccess) and an inline policy.
-  It sets the trust policy on that IAM Role to permit Prowler to assume that role.
+  It sets the trust policy on that IAM Role to permit Cloudnation to assume that role.
 Parameters:
   ExternalId:
     Description: |
-      This is the External ID that Prowler will use to assume the role ProwlerScan IAM Role.
+      This is the External ID that Cloudnation will use to assume the role CloudnationScans IAM Role.
     Type: String
     MinLength: 1
     AllowedPattern: ".+"
     ConstraintDescription: "ExternalId must not be empty."
   AccountId:
     Description: |
-      AWS Account ID that will assume the role created, if you are deploying this template to be used in Prowler Cloud please do not edit this.
+      AWS Account ID that will assume the role created, if you are deploying this template to be used in Cloudnation please do not edit this.
     Type: String
     Default: "571600850034"
     MinLength: 12
@@ -25,15 +25,15 @@ Parameters:
     ConstraintDescription: "AccountId must be a valid AWS Account ID."
   IAMPrincipal:
     Description: |
-      The IAM principal type and name that will be allowed to assume the role created, leave an * for all the IAM principals in your AWS account. If you are deploying this template to be used in Prowler Cloud please do not edit this.
+      The IAM principal type and name that will be allowed to assume the role created, leave an * for all the IAM principals in your AWS account. If you are deploying this template to be used in CloudNation please do not edit this.
     Type: String
-    Default: "user/ProwlerAdmin"
+    Default: "user/CloudnationAdmin"
 
 Resources:
-  ProwlerScan:
+  CloudnationScan:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: ProwlerScan
+      RoleName: CloudnationScan
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -51,7 +51,7 @@ Resources:
         - "arn:aws:iam::aws:policy/SecurityAudit"
         - "arn:aws:iam::aws:policy/job-function/ViewOnlyAccess"
       Policies:
-        - PolicyName: ProwlerScan
+        - PolicyName: CloudNationScan
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
@@ -112,14 +112,14 @@ Resources:
                   - "arn:*:apigateway:*::/apis/*"
       Tags:
         - Key: "Service"
-          Value: "https://prowler.com"
+          Value: "https://cloudnation.ai"
         - Key: "Support"
-          Value: "support@prowler.com"
+          Value: "sourabh@cloudnation.ai"
         - Key: "CloudFormation"
           Value: "true"
         - Key: "Name"
-          Value: "ProwlerScan"
+          Value: "CloudnationScan"
 Outputs:
-  ProwlerScanRoleArn:
-    Description: "ARN of the created ProwlerScan role"
-    Value: !GetAtt ProwlerScan.Arn
+  CloudnationScanRoleArn:
+    Description: "ARN of the created CloudnationScan role"
+    Value: !GetAtt CloudnationScan.Arn
